@@ -159,7 +159,7 @@ const AddSavingsModal: React.FC<AddEntryModalProps> = ({ isVisible, onClose, suc
       };
 
       const response = await axios.post(`${apiUrl}/trans/api/v1/saving`, savingData, config);
-      dispatch(clearGoal());
+      // dispatch(clearGoal());
       dispatch(addGoal(response.data.goal));
 
       // Reset form

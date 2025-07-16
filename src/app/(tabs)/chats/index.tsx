@@ -171,7 +171,7 @@ export default function ChatList() {
             <View className='flex-row justify-between mb-3 mt-3 mx-4'>
                 <Text className="text-lg font-bold text-gray-800 mb-4">ALL MESSAGES</Text>
                 <TouchableOpacity className="border border-blue-500 rounded-xl px-4 py-2" onPress={() => setModalVisible(true)}>
-                    <Text className="text-blue-500 font-semibold">+ Message</Text>
+                    <Text className="text-blue-500 font-semibold">+ Inquiry</Text>
                 </TouchableOpacity>
 
             </View>

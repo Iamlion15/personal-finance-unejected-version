@@ -139,7 +139,7 @@ const AddGoalModal: React.FC<AddGoalModalProps> = ({ isVisible, onClose, success
                 },
             };
             const response = await axios.post(`${apiUrl}/trans/api/v1/set/goal`, goalData, config);
-            dispatch(clearGoal())
+            // dispatch(clearGoal())
             dispatch(addGoal(response.data.goal));
             onClose();
             successModalOpen();
@@ -163,7 +163,7 @@ const AddGoalModal: React.FC<AddGoalModalProps> = ({ isVisible, onClose, success
 
     return (
         <Modal isVisible={isVisible} onBackdropPress={onClose} onBackButtonPress={onClose}>
-            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "padding"} className="flex-1 bg-white">
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "padding"} className="">
                 <View className="bg-white rounded-xl p-6 shadow-lg">
                     <View className="flex-row justify-between items-center mb-6">
                         <Text className="text-2xl font-bold text-blue-600">Add Goals</Text>

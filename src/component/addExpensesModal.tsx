@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Feather } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import axios from 'axios';
 import { getUserData } from '../Utils/asyncStorageLoginDetails';
 import { useDispatch } from 'react-redux'
 import { setExpense, clearExpense } from '../redux/slices/expensesSlices';
+
 
 type AddEntryModalProps = {
   isVisible: boolean;
@@ -34,6 +35,7 @@ const categories = [
   { label: 'Health & Wellness', value: 'health_wellness' },
 ];
 
+
 const AddExpensesModal: React.FC<AddEntryModalProps> = ({ isVisible, onClose, successModalOpen }) => {
   const dispatch = useDispatch();
   const [expenseData, setExpenseData] = useState<expenseTypes>({
@@ -50,7 +52,6 @@ const AddExpensesModal: React.FC<AddEntryModalProps> = ({ isVisible, onClose, su
   })
   const inputStyle = 'bg-gray-50 rounded-lg p-3 text-base text-gray-800 border border-gray-200';
   const labelStyle = 'text-lg font-semibold text-gray-800 mb-3';
-  
   const onChangeText = (type: string, value: string) => {
     switch (type) {
       case "amount":
@@ -115,18 +116,12 @@ const AddExpensesModal: React.FC<AddEntryModalProps> = ({ isVisible, onClose, su
   };
 
   return (
-    <Modal 
-      isVisible={isVisible} 
-      onBackdropPress={onClose} 
-      onBackButtonPress={onClose} 
-      useNativeDriver={true}
-      avoidKeyboard={true}
-    >
-      <KeyboardAvoidingView 
+    <Modal isVisible={isVisible} onBackdropPress={onClose} onBackButtonPress={onClose}>
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1, justifyContent: 'center' }}
       >
-        <View className="bg-white rounded-xl p-6 shadow-lg max-h-[90%]">
+        <View className="bg-white rounded-xl p-6 shadow-lg">
           <View className="flex-row justify-between items-center mb-6">
             <Text className="text-2xl font-bold text-blue-500">Add Expenses</Text>
             <TouchableOpacity onPress={onClose}>
@@ -134,64 +129,62 @@ const AddExpensesModal: React.FC<AddEntryModalProps> = ({ isVisible, onClose, su
             </TouchableOpacity>
           </View>
 
-          <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-            <View className="mb-4">
-              <Text className={labelStyle}>Category</Text>
-              <Dropdown
-                style={{ backgroundColor: '#F9FAFB', borderRadius: 8, padding: 12, borderWidth: 1, borderColor: '#E5E7EB' }}
-                placeholderStyle={{ color: '#9CA3AF' }}
-                selectedTextStyle={{ color: '#374151' }}
-                data={categories}
-                labelField="label"
-                valueField="value"
-                placeholder="Select category"
-                value={expenseData.category}
-                onChange={(item) => onChangeText('category', item.value)}
-                renderRightIcon={() => <Feather name="chevron-down" size={20} color="#374151" />}
-              />
-            </View>
+          <View className="mb-4">
+            <Text className={labelStyle}>Category</Text>
+            <Dropdown
+              style={{ backgroundColor: '#F9FAFB', borderRadius: 8, padding: 12, borderWidth: 1, borderColor: '#E5E7EB' }}
+              placeholderStyle={{ color: '#9CA3AF' }}
+              selectedTextStyle={{ color: '#374151' }}
+              data={categories}
+              labelField="label"
+              valueField="value"
+              placeholder="Select category"
+              value={expenseData.category}
+              onChange={(item) => onChangeText('category', item.value)}
+              renderRightIcon={() => <Feather name="chevron-down" size={20} color="#374151" />}
+            />
+          </View>
 
-            <View className="mb-4">
-              <Text className={labelStyle}>Source</Text>
-              <Dropdown
-                style={{ backgroundColor: '#F9FAFB', borderRadius: 8, padding: 12, borderWidth: 1, borderColor: '#E5E7EB' }}
-                placeholderStyle={{ color: '#9CA3AF' }}
-                selectedTextStyle={{ color: '#374151' }}
-                data={source}
-                labelField="label"
-                valueField="value"
-                placeholder="Select source"
-                value={expenseData.source}
-                onChange={(item) => onChangeText('source', item.value)}
-                renderRightIcon={() => <Feather name="chevron-down" size={20} color="#374151" />}
-              />
-            </View>
+          <View className="mb-4">
+            <Text className={labelStyle}>source</Text>
+            <Dropdown
+              style={{ backgroundColor: '#F9FAFB', borderRadius: 8, padding: 12, borderWidth: 1, borderColor: '#E5E7EB' }}
+              placeholderStyle={{ color: '#9CA3AF' }}
+              selectedTextStyle={{ color: '#374151' }}
+              data={source}
+              labelField="label"
+              valueField="value"
+              placeholder="Select category"
+              value={expenseData.source}
+              onChange={(item) => onChangeText('source', item.value)}
+              renderRightIcon={() => <Feather name="chevron-down" size={20} color="#374151" />}
+            />
+          </View>
 
-            <View className="mb-4">
-              <Text className={labelStyle}>Amount</Text>
-              <TextInput
-                className={inputStyle}
-                placeholder="Enter amount (RWF)"
-                placeholderTextColor="#9CA3AF"
-                keyboardType="numeric"
-                value={expenseData.amount}
-                onChangeText={(text) => onChangeText('amount', text)}
-              />
-            </View>
+          <View className="mb-4">
+            <Text className={labelStyle}>Amount</Text>
+            <TextInput
+              className={inputStyle}
+              placeholder="Enter amount (RWF)"
+              placeholderTextColor="#9CA3AF"
+              keyboardType="numeric"
+              value={expenseData.amount}
+              onChangeText={(text) => onChangeText('amount', text)}
+            />
+          </View>
 
-            <View className="mb-6">
-              <Text className={labelStyle}>Item name</Text>
-              <TextInput
-                className={inputStyle}
-                placeholder="Enter item name"
-                placeholderTextColor="#9CA3AF"
-                value={expenseData.item}
-                onChangeText={(text) => onChangeText('item', text)}
-              />
-            </View>
-          </ScrollView>
+          <View className="mb-4">
+            <Text className={labelStyle}>Item name</Text>
+            <TextInput
+              className={inputStyle}
+              placeholder="Enter item name"
+              placeholderTextColor="#9CA3AF"
+              value={expenseData.item}
+              onChangeText={(text) => onChangeText('item', text)}
+            />
+          </View>
 
-          <View className="flex-row justify-end border-t border-gray-200 pt-4">
+          <View className="flex-row justify-end">
             <TouchableOpacity className="bg-gray-200 rounded-lg px-6 py-3 mr-3" onPress={onClose}>
               <Text className="text-base font-semibold text-gray-800">Cancel</Text>
             </TouchableOpacity>
